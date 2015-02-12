@@ -58,6 +58,7 @@ public class TestInsertion {
 	private static String outputDossier = null;
 	/*
 	 * Cette méthode permet de recupérer le dossier documents.
+	 * Ligne de commentaire
 	 */
 	
 	public static String loadUserDocuments(){
