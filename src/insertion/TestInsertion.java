@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -22,21 +21,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stax.StAXResult;
-import javax.xml.transform.stax.StAXSource;
-
-
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.json.XML;
-
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -44,12 +31,9 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
 
-
-import de.odysseus.staxon.json.JsonXMLConfig;
-import de.odysseus.staxon.json.JsonXMLConfigBuilder;
-import de.odysseus.staxon.json.JsonXMLOutputFactory;
-
 /**
+ * Cette classe est responsable de faire la traduction des fichiers XML en JSON et l'insertion 
+ * eventuelle dans la base de données Mongodb.
  * @author Salim AHMED
  *
  */
@@ -85,11 +69,21 @@ public class TestInsertion {
 		try(BufferedReader in = new BufferedReader(new InputStreamReader(System.in))) {
 			String nomDossier = in.readLine();
 
+			while(nomDossier.isEmpty()){
+				System.out.println("Donner le nom du dossier où sont stockés les fichiers.");
+				nomDossier = in.readLine();
+			}
 			inputDossier = documents+File.separator+nomDossier;
 
 			// Saisie du nom du dossier où seront stockés les fichiers JSON convertis.
 			System.out.println("Donner le nom du dossier où stocker les fichiers de sorti.");
 			String nomDossierSortie = in.readLine();
+
+			while(nomDossierSortie.isEmpty()){
+				System.out.println("Donner le nom du dossier où stocker les fichiers de sorti.");
+				nomDossierSortie = in.readLine();
+			}
+
 			outputDossier = documents+File.separator+nomDossierSortie;
 
 		} catch (IOException e1) {
@@ -128,7 +122,7 @@ public class TestInsertion {
 						Matcher matcher = pattern.matcher(wholeDoc);
 						StringBuffer docBuilder = new StringBuffer();
 						if (matcher.find()) {
-							System.out.println("matched, second group "+matcher.group(2));
+							//System.out.println("matched, second group "+matcher.group(2));
 
 							LocalDate mongoDate = LocalDate.parse(matcher.group(2),dateTimeFormatter);
 							StringBuilder strbuilder = new StringBuilder();
@@ -158,18 +152,16 @@ public class TestInsertion {
 							 */
 							bais.reset();
 						}
-						
+
 						/*
 						 * Using the first method, org.json 
 						 */
 						long startTimeORGJSON = System.currentTimeMillis();
 
-						
-						 JSONObject jsonObject = XML.toJSONObject(IOUtils.toString((InputStream)bais));
-						 jsonObject.write(outputORGJSON);
-						 outputORGJSON.append(jsonObject.toString(PRETTY_INDENT_FACTOR));
-						// System.out.println("JSONObject represntation\n"+jsonObject.toString(4));
-						 
+
+						JSONObject jsonObject = XML.toJSONObject(IOUtils.toString((InputStream)bais));
+						jsonObject.write(outputORGJSON);
+						outputORGJSON.append(jsonObject.toString(PRETTY_INDENT_FACTOR));						 
 
 						System.out.printf("Time elapsed, 1st method: %d\n",System.currentTimeMillis() - startTimeORGJSON);
 
@@ -183,31 +175,31 @@ public class TestInsertion {
 						 * Using the second method, saxon
 						 * This method will be shelved for the time being
 						 */
-					//	long startTimeSAXON = System.currentTimeMillis();
+						//	long startTimeSAXON = System.currentTimeMillis();
 						/*
 						 * Specify the configuration for the XML file.
 						 */
-					//	JsonXMLConfig config = new JsonXMLConfigBuilder().autoArray(true).autoPrimitive(true).prettyPrint(true).build();
+						//	JsonXMLConfig config = new JsonXMLConfigBuilder().autoArray(true).autoPrimitive(true).prettyPrint(true).build();
 						/*
 						 * Create source (XML).
 						 */
 
-					//	XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader((InputStream)bais);
-					//	Source source = new StAXSource(reader);
+						//	XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader((InputStream)bais);
+						//	Source source = new StAXSource(reader);
 
 						/*
 						 * Create result (JSON).
 						 */
-					//	XMLStreamWriter writer = new JsonXMLOutputFactory(config).createXMLStreamWriter(output);
-					//	Result result = new StAXResult(writer);
+						//	XMLStreamWriter writer = new JsonXMLOutputFactory(config).createXMLStreamWriter(output);
+						//	Result result = new StAXResult(writer);
 
 
 						/*
 						 * Copy source to result via "identity transform".
 						 */
-					//	TransformerFactory.newInstance().newTransformer().transform(source, result);
+						//	TransformerFactory.newInstance().newTransformer().transform(source, result);
 
-					//	System.out.printf("Time elapsed SAXON: %d\n",System.currentTimeMillis() - startTimeSAXON);
+						//	System.out.printf("Time elapsed SAXON: %d\n",System.currentTimeMillis() - startTimeSAXON);
 
 						/*
 						 * EOF second method
@@ -254,17 +246,17 @@ public class TestInsertion {
 
 						// Close the mongoClient instance and clean up resources
 
-								mongoClient.close();
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
+						mongoClient.close();
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-				});
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-
-
+				}
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
+
+
 	}
+}
