@@ -1,39 +1,19 @@
 package insertion;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.io.IOUtils;
-
 
 public class testDate {
-
+/*
 	public static void main(String[] args) {
 		String startDateString = "06/27/2007";
 	    DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); 
-	    Date startDate;
+	 //   Date startDate;
 	    
-	    String string = "January 2, 2010";
+	   // String string = "January 2, 2010";
 	    String frenchDate = "24/06/2005";
-	    DateFormat format = new SimpleDateFormat("d/M/yyyy", Locale.FRENCH);
+	   // DateFormat format = new SimpleDateFormat("d/M/yyyy", Locale.FRENCH);
 	 
 	    
 	    try {
-	    	Calendar mydate = new GregorianCalendar();
+	    	//Calendar mydate = new GregorianCalendar();
 	    	
 	    	DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy",Locale.FRANCE);
 	    	LocalDate date = LocalDate.parse(frenchDate,dateTimeFormatter);
@@ -50,8 +30,8 @@ public class testDate {
 	   	    System.out.println(date); // Sat Jan 02 00:00:00 GMT 2010
 	   	    System.out.println(builder.toString());
 	   	    
-	        startDate = df.parse(startDateString);
-	        String newDateString = df.format(startDate);
+	      //  startDate = df.parse(startDateString);
+	      //  String newDateString = df.format(startDate);
 	       // System.out.println(newDateString);
 	        
 	        
@@ -59,7 +39,7 @@ public class testDate {
 	        
 	        String file = "/Users/limi/Desktop/test/paper_1.xml";
 	        InputStream inputStream = new FileInputStream(file);
-	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	   //     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	        
 	      //  IOUtils.copy(inputStream, baos);
 		//	byte[] bytes = baos.toByteArray();
@@ -92,20 +72,20 @@ public class testDate {
 			
 			System.out.println("String buffer "+docBuilder.toString());
 			//if(bais.markSupported()){
-				/*
-				 * Reset reading mark to beginning of file.
-				 */
+				
+				 //* Reset reading mark to beginning of file.
+				 
 			//	bais.reset();
 		//	}
 	        inputStream.close();
 	       // bais.close();
-	    } catch (ParseException|IOException e) {
+	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }finally{
 	    	
 	    }
 	    
 
-	}
+	}*/
 
 }

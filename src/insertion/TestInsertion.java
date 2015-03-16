@@ -76,11 +76,11 @@ public class TestInsertion {
 			inputDossier = documents+File.separator+nomDossier;
 
 			// Saisie du nom du dossier où seront stockés les fichiers JSON convertis.
-			System.out.println("Donner le nom du dossier où stocker les fichiers de sorti.");
+			System.out.println("Donner le nom du dossier où stocker les fichiers de sortie.");
 			String nomDossierSortie = in.readLine();
 
 			while(nomDossierSortie.isEmpty()){
-				System.out.println("Donner le nom du dossier où stocker les fichiers de sorti.");
+				System.out.println("Donner le nom du dossier où stocker les fichiers de sortie.");
 				nomDossierSortie = in.readLine();
 			}
 
@@ -220,7 +220,9 @@ public class TestInsertion {
 		 * Read all generated json files and insert into mongodb
 		 */
 
+		
 		try {
+			MongoClient mongoClient = new MongoClient("localhost");
 			Files.walk(Paths.get(outputDossier)).forEach(filePath -> {
 				if (Files.isRegularFile(filePath)) {
 					System.out.println(filePath);
@@ -232,7 +234,7 @@ public class TestInsertion {
 						/*
 						 * Create mongodb interfacing instance.
 						 */
-						MongoClient mongoClient = new MongoClient("localhost");
+						
 
 						DB bdPER = mongoClient.getDB("dbPER");
 
